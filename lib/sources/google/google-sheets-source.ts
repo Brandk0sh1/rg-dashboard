@@ -23,7 +23,7 @@ export class GoogleSheetsSource implements DashboardDatasetSource {
     return {
       source: this.config.source ?? "google-sheets",
       generatedAt: new Date(),
-      metrics: Object.entries(this.config.columns.metrics).map(([key, definition]) => ({
+      metrics: Object.entries(this.config.mapping.metrics).map(([key, definition]) => ({
         key,
         label: definition.label,
         unit: definition.unit ?? "count",
@@ -39,29 +39,31 @@ export class GoogleSheetsSource implements DashboardDatasetSource {
 
     if (this.config.sheetId) {
       params.set("gid", this.config.sheetId);
+    } else if (this.config.sheetName) {
+      params.set("sheet", this.config.sheetName);
     }
 
     return `https://docs.google.com/spreadsheets/d/${this.config.spreadsheetId}/gviz/tq?${params}`;
   }
 
   private toSnapshot(row: CsvRow, index: number, managers: Map<string, Manager>): Snapshot {
-    const { columns } = this.config;
-    const managerId = requiredCell(row, columns.managerId);
-    const managerName = requiredCell(row, columns.managerName);
-    const occurredAt = new Date(requiredCell(row, columns.occurredAt));
+    const { mapping } = this.config;
+    const managerId = requiredCell(row, mapping.managerId);
+    const managerName = requiredCell(row, mapping.managerName);
+    const occurredAt = new Date(requiredCell(row, mapping.occurredAt));
 
     if (Number.isNaN(occurredAt.getTime())) {
-      throw new TypeError(`Invalid date in column "${columns.occurredAt}" at row ${index + 2}.`);
+      throw new TypeError(`Invalid date in column "${mapping.occurredAt}" at row ${index + 2}.`);
     }
 
     managers.set(managerId, { id: managerId, name: managerName });
 
     return {
-      id: columns.snapshotId ? requiredCell(row, columns.snapshotId) : `${managerId}:${occurredAt.toISOString()}`,
+      id: mapping.snapshotId ? requiredCell(row, mapping.snapshotId) : `${managerId}:${occurredAt.toISOString()}`,
       occurredAt,
       managerId,
       values: Object.fromEntries(
-        Object.entries(columns.metrics).map(([key, definition]) => [
+        Object.entries(mapping.metrics).map(([key, definition]) => [
           key,
           parseFiniteNumber(requiredCell(row, definition.column)),
         ]),

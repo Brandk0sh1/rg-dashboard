@@ -1,9 +1,10 @@
 import { DashboardShell } from "@/components/dashboard/dashboard-shell";
+import { dashboardConfig } from "@/config/dashboard.config";
 import { getDashboardOverview } from "@/lib/analytics/dashboard-service";
-import { MockDashboardSource } from "@/lib/sources/mock/mock-dashboard-source";
+import { createDashboardSource } from "@/lib/sources/dashboard-source-factory";
 
 export default async function HomePage() {
-  const dataset = await new MockDashboardSource().load();
+  const dataset = await createDashboardSource(dashboardConfig).load();
   const overview = getDashboardOverview(dataset);
 
   return (
