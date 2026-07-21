@@ -9,8 +9,8 @@ export interface GoogleSheetsMetricColumn {
 
 export interface GoogleSheetsCsvConfig {
   spreadsheetId: string;
-  sheetId?: string;
-  sheetName?: string;
+  sheetName: string;
+  gid: string;
   source?: Extract<AnalyticsSource, "google-sheets">;
   mapping: {
     occurredAt: string;

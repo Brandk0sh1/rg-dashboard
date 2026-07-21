@@ -13,9 +13,9 @@ export const dashboardConfig: DashboardConfig = {
   source: configuredSource === "google-sheets" ? "google-sheets" : "mock",
   googleSheets: {
     source: "google-sheets",
-    spreadsheetId: process.env.GOOGLE_SHEETS_SPREADSHEET_ID ?? "",
-    sheetId: process.env.GOOGLE_SHEETS_SHEET_ID,
-    sheetName: process.env.GOOGLE_SHEETS_SHEET_NAME ?? "Dashboard",
+    spreadsheetId: process.env.GOOGLE_SHEETS_SPREADSHEET_ID ?? "2PACX-1vQm59asRktGJKPGZGnfc7iCsckMI-Z64VjeGRFhZvDLCIHB0aj8rnICW_bLi1swS9YivKIxeGe4sshl",
+    sheetName: process.env.GOOGLE_SHEETS_SHEET_NAME ?? "Дашборд",
+    gid: process.env.GOOGLE_SHEETS_GID ?? "0",
     mapping: {
       snapshotId: "snapshot_id",
       occurredAt: "date",

@@ -35,15 +35,13 @@ export class GoogleSheetsSource implements DashboardDatasetSource {
   }
 
   private getCsvUrl(): string {
-    const params = new URLSearchParams({ tqx: "out:csv" });
+    const params = new URLSearchParams({
+      gid: this.config.gid,
+      output: "csv",
+      single: "true",
+    });
 
-    if (this.config.sheetId) {
-      params.set("gid", this.config.sheetId);
-    } else if (this.config.sheetName) {
-      params.set("sheet", this.config.sheetName);
-    }
-
-    return `https://docs.google.com/spreadsheets/d/${this.config.spreadsheetId}/gviz/tq?${params}`;
+    return `https://docs.google.com/spreadsheets/d/e/${this.config.spreadsheetId}/pub?${params}`;
   }
 
   private toSnapshot(row: CsvRow, index: number, managers: Map<string, Manager>): Snapshot {
