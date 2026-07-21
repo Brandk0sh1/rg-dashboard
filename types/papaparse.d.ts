@@ -1,0 +1,16 @@
+declare module "papaparse" {
+  interface ParseError {
+    message: string;
+    row?: number;
+  }
+
+  interface ParseResult<T> {
+    data: T[];
+    errors: ParseError[];
+  }
+
+  export function parse<T>(input: string, config: {
+    header?: boolean;
+    skipEmptyLines?: boolean | "greedy";
+  }): ParseResult<T>;
+}

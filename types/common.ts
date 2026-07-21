@@ -3,12 +3,12 @@ export interface MetricValue {
   formatted?: string;
 }
 
-export interface Period {
+export interface DateRange {
   from: Date;
   to: Date;
 }
 
-export interface Option {
+export interface SelectOption {
   label: string;
   value: string;
 }
